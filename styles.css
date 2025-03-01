@@ -1,5 +1,9 @@
 * {
     background-color: #000000;
-    color: #9400d3;
+    color: #9400D3;
     font-family: Georiga, monospace;
+}
+a {
+    color: #FF0000;
+    text-decoration: line-through;
 }
