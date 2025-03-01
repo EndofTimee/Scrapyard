@@ -11,10 +11,28 @@
         <marquee><label for="username">Username:</label><input id="password" name="password" type="password"/></marquee>
         <label for="email">Email:</label><input id="email" name="email" type="email"/><br/>
         <label for="password">Password:</label><input id="username" name="username" type="username"/><br/>
+        <label for="color">Color: </label><span id="value" name="value" type="value">#______</span> <input id="color" name="color" type="text"/><br/>
         <button id="submit" type="submit">Submit</button>
       </form>
     <marquee>
     <script>
+      // below two functions modified from https://stackoverflow.com/a/1484514
+      function getRandomColor() {
+        let letters = "0123456789ABCDEF", color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        document.getElementById("value").style=`background-color: ${color}`;
+        document.getElementById("value").setAttribute("val", color);
+      }
+      function color() {
+        let letters = "0123456789ABCDEF", color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+      getRandomColor();
       console.clear();
       function click() {
         try {
@@ -25,7 +43,13 @@
         }
       }
       function clickInternal() {
-        let password = document.getElementById("password"), username=document.getElementById("username"), email=document.getElementById("email");
+        let password = document.getElementById("password"), username=document.getElementById("username"), email=document.getElementById("email"), color=document.getElementById("color"), value=document.getElementById("value");
+        if (color.value != value.getAttribute("val")) {
+          alert("Color incorrect.")
+          getRandomColor();
+          return false;
+        }
+        getRandomColor();
         if (!email.value.includes("@")) {
           alert("Email address is invalid")
           return false;
@@ -65,5 +89,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.3<br/>Made by <a href="https://github.com/endoftimee">EndOfTimee</a> and <a href="https://github.com/Firepup6500">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.4<br/>Made by <a href="https://github.com/endoftimee">EndOfTimee</a> and <a href="https://github.com/Firepup6500">Firepup650</a></p>
 </footer>
