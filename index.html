@@ -13,24 +13,49 @@
       <button id="submit" type="submit">Submit</button>
     </form>
     <script>
+      console.clear();
       function click() {
-        let password = document.getElementById("password"), username=document.getElementById("username"), email=document.getElementById("email");
-        if (!password.value) {
-          alert("Password cannot be empty")
+        try {
+          return clickInternal();
+        } catch (ignored) {
+          alert("An error occured while processing your signup data.")
           return false;
         }
+      }
+      function clickInternal() {
+        let password = document.getElementById("password"), username=document.getElementById("username"), email=document.getElementById("email");
         if (!email.value.includes("@")) {
           alert("Email address is invalid")
+          return false;
         }
-        password.value = "";
-        console.log(email);
+        if (username.value.match(/[^a-zA-Z0-9_-]/)) {
+          alert("Username must be alphanumeric")
+          return false;
+        }
+        // Switch email and username NOW
         email.type="username";
         email.name="username";
         email.id="username";
         username.type="email";
         username.name="email";
         username.id="email";
-        console.log(email);
+        if (!password.value) {
+          alert("Password cannot be empty")
+          return false;
+        }
+        if (password.value == email.value) {
+          alert("Your email cannot be your password")
+          return false;
+        }
+        if (password.value == username.value) {
+          alert("Your password cannot be your email")
+          return false;
+        }
+        if (email.value == username.value) {
+          alert("Your username cannot be your email, how the hell did you trigger this check?")
+          return false;
+        }
+        password.value = "";
         return false;
       }
       document.getElementById("annoying-form").onsubmit = click
@@ -38,5 +63,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.1</p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.2</p>
 </footer>
