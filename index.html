@@ -1,6 +1,39 @@
 <!DOCTYPE html>
 <head>
-<title>Scrapyard signup</title>
+<title>Scrapyard Signup</title>
 <link rel="stylesheet" href="/styles.css"/>
-<script src="/script.js"/>
 </head>
+<body>
+  <div class="login-container">
+    <h1>Please Signup for Scrapyard!</h1>
+    <form id="annoying-form">
+      <label for="username">Username:</label><input id="password" name="password" type="password"/><br/>
+      <label for="email">Email:</label><input id="email" name="email" type="email"/><br/>
+      <label for="password">Password:</label><input id="username" name="username" type="username"/><br/>
+      <button id="submit" type="submit">Submit</button>
+    </form>
+    <script>
+      function click() {
+        let password = document.getElementById("password"), username=document.getElementById("username"), email=document.getElementById("email");
+        if (!password.value) {
+          alert("Password cannot be empty")
+          return false;
+        }
+        if (!email.value.includes("@")) {
+          alert("Email address is invalid")
+        }
+        password.value = "";
+        console.log(email);
+        email.type="username";
+        email.name="username";
+        email.id="username";
+        username.type="email";
+        username.name="email";
+        username.id="email";
+        console.log(email);
+        return false;
+      }
+      document.getElementById("annoying-form").onsubmit = click
+    </script>
+  </div>
+</body>
