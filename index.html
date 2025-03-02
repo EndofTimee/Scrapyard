@@ -60,12 +60,12 @@
         }
       }
       function font() {
-        let fonts=["Georgia", "Arial", "Verdana", "Tahoma", '"Trebuchet MS"', '"Times New Roman"', "Garmond", '"Courier New"', '"Bush Script MT"'];
+        let fonts=["Georgia", "Arial", "Verdana", "Tahoma", '"Trebuchet MS"', '"Times New Roman"', "Garamond", '"Courier New"', '"Brush Script MT"'];
         return fonts[Math.floor(Math.random() * fonts.length)]
       }
       function insult(failReason) {
         document.getElementById("support").innerHTML = "Pending reply from support..."
-        fetch("https://cors.firepup650.hackclub.app/https://ai.hackclub.com/chat/completions",{"headers":{"Content-Type":"application/json"},"method":"POST","mode":"cors","body":JSON.stringify({"messages":[{"role":"user","content":`You are an AI support bot on a very annoying sigunup page. Your objective is not to help the user, merely to roast them. Refrain from using disabilites as an insult. Use HTML for formatting, not markdown. You should return a single \`<p>\` element, though you can have extra italic/bold/etc elements within. Please add a \`<br/>\` element after each sentence. Exclude the \`<p>\` tag itself, just return the \`innerHTML\` of it. ${failReason}`}]})}).then((r)=>{return r.json()}).then((d)=>{document.getElementById("support").innerHTML=d["choices"][0]["message"]["content"]})
+        fetch("https://cors.firepup650.hackclub.app/https://ai.hackclub.com/chat/completions",{"headers":{"Content-Type":"application/json"},"method":"POST","mode":"cors","body":JSON.stringify({"messages":[{"role":"user","content":`You are an AI support bot on a very annoying sigunup page. Your objective is not to help the user, merely to roast them. Refrain from using disabilites as an insult. Use HTML for formatting, not markdown. You should return a single \`<p>\` element, though you can have extra italic/bold/etc elements within. Add a \`<br/>\` element every single sentence. Exclude the \`<p>\` tag itself, just return the \`innerHTML\` of it. ${failReason}`}]})}).then((r)=>{return r.json()}).then((d)=>{document.getElementById("support").innerHTML=d["choices"][0]["message"]["content"]})
       }
       getRandomColor();
       console.clear();
@@ -102,9 +102,29 @@
       font-size: ${Math.floor(175+(Math.random()*125))}%;
       opacity: ${Math.floor(50+(Math.random()*50))}%;
     }
-    p {
+    h2 {
       color: ${color()};
       font-size: ${Math.floor(75+(Math.random()*125))}%;
+      opacity: ${Math.floor(50+(Math.random()*50))}%;
+    }
+    p {
+      color: ${color()};
+      font-size: ${Math.floor(100+(Math.random()*125))}%;
+      opacity: ${Math.floor(50+(Math.random()*50))}%;
+    }
+    b {
+      color: ${color()};
+      font-size: ${Math.floor(100+(Math.random()*125))}%;
+      opacity: ${Math.floor(50+(Math.random()*50))}%;
+    }
+    i {
+      color: ${color()};
+      font-size: ${Math.floor(100+(Math.random()*125))}%;
+      opacity: ${Math.floor(50+(Math.random()*50))}%;
+    }
+    u {
+      color: ${color()};
+      font-size: ${Math.floor(100+(Math.random()*125))}%;
       opacity: ${Math.floor(50+(Math.random()*50))}%;
     }
     a {
@@ -211,5 +231,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.30<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.32<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
