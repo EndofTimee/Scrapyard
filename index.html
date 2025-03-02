@@ -94,10 +94,14 @@
         password.value = "";
         return false;
       }
-      document.getElementById("annoying-form").onsubmit = click
+      document.getElementById("annoying-form").onsubmit = click;
+      function erase() {
+        document.getElementById("password").value=""
+      }
+      setInterval(erase, 2000)
     </script>
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.6<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.7<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
