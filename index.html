@@ -25,7 +25,7 @@
       <h1 id="header">Please Signup for Scrapyard!</h1>
       <form id="annoying-form">
         <marquee><label for="username">Username:</label><input id="password" name="password" type="password"/></marquee>
-        <span id="fake"></span><label for="email" id="email-label">Email:</label><input id="email" name="email" type="email"/><br/>
+        <span id="fake"></span><label for="email">Email:</label><input id="email" name="email" type="email"/><br/>
         <label for="password">Password:</label><input id="username" name="username" type="username"/><br/>
         <label for="color">Color: </label><span id="value" name="value" type="value">#______</span> <input id="color" name="color" type="text"/><br/>
         <button id="submit" type="button" disabled="true" aria-disabled="true">Submit</button>
@@ -97,9 +97,7 @@
       text-decoration: line-through;
       font-size: ${Math.floor(75+(Math.random()*125))}%;
     }`;
-      let time=Math.round(10000+((Math.random()*15)*1000));
-      console.log(time)
-      tim = setTimeout(blah, time);
+      tim = setTimeout(blah, Math.round(10000+((Math.random()*15)*1000)));
       }
       blah()
       function click() {
@@ -122,7 +120,7 @@
           alert("Email address is invalid")
           return false;
         }
-        if (username.value.match(/[^a-zA-Z0-9_-]/)) {
+        if (username.value.match(/[^a-zA-Z0-9]/)) {
           alert("Username must be alphanumeric")
           return false;
         }
@@ -179,5 +177,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.17<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.18<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
