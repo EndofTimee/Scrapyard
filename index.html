@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
   <title>Scrapyard Signup</title>
-  <style>
+  <style id="style">
     * {
       background-color: #000000;
       color: #9400D3;
@@ -42,8 +42,26 @@
         }
         return color;
       }
+      function font() {
+        let fonts=["Georiga", "Arial"];
+      }
       getRandomColor();
       console.clear();
+      function blah() {
+        document.getElementById("style").innerHTML=`* {
+      background-color: ${color()};
+      color: ${color()};
+      font-family: Georiga, monospace;
+    }
+    a {
+      color: ${color()};
+      text-decoration: line-through;
+    }`;
+      let time=Math.round(10000+((Math.random()*15)*1000));
+      console.log(time)
+      setTimeout(blah, time);
+      }
+      blah()
       function click() {
         try {
           return clickInternal();
@@ -103,5 +121,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.7<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.8<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
