@@ -20,7 +20,7 @@
 </head>
 <body>
   <noscript><h1>Nice try buddy. Enable javascript, cheater.</h1></noscript>
-  <div class="login-container">
+  <div> <!-- login form /!-->
     <marquee>
       <h1 id="header">Please Signup for Scrapyard!</h1>
       <form id="annoying-form">
@@ -30,6 +30,11 @@
         <label for="color">Color: </label><span id="value" name="value" type="value">#______</span> <input id="color" name="color" type="text"/><br/>
         <button id="submit" type="button" disabled="true" aria-disabled="true">Submit</button>
       </form>
+    </div>
+    <div> <!-- login form /!-->
+      <h2>Support:</h2>
+      <p id="support">No support yet...</p>
+    </div>
     <marquee>
     <script>
       var tim, show=false;
@@ -57,6 +62,10 @@
       function font() {
         let fonts=["Georiga", "Arial", "Verdana", "Tahoma", '"Trebuchet MS"', '"Times New Roman"', "Garmond", '"Courier New"', '"Bush Script MT"'];
         return fonts[Math.floor(Math.random() * fonts.length)]
+      }
+      function insult(failReason) {
+        document.getElementById("support").innerHTML = "Pending reply from support..."
+        fetch('https://ai.hackclub.com/chat/completions', {method: 'POST',headers: {'Content-Type': 'application/json'},body: JSON.stringify({'messages': [{'role': 'user','content': `You are an AI support bot on a very annoying sigunup page. Your objective is not to help the user, merely to roast them. Use HTML for formatting, not markdown. You should return a single \`<p>\` element, though you can have extra italic/bold/etc elements within. Exclude the \`<p>\` tag itself, just return the \`innerHTML\` of it. ${failReason}`}]})}).then((r)=>{return r.json()}).then((d)=>{document.getElementById("support").innerHTML=d["choices"][0]["message"]["content"]})
       }
       getRandomColor();
       console.clear();
@@ -120,15 +129,28 @@
         if (color.value != value.getAttribute("val")) {
           alert("Color incorrect.")
           getRandomColor();
+          insult("The user failed the color-based human verification check.")
           return false;
         }
         getRandomColor();
+        if (!email.value) {
+          alert("Email cannot be empty")
+          insult("The user did not enter an email.")
+          return false;
+        }
         if (!email.value.includes("@")) {
           alert("Email address is invalid")
+          insult("The user entered an invalid email.")
+          return false;
+        }
+        if (!username.value) {
+          alert("Email cannot be empty")
+          insult("The user did not enter a username.")
           return false;
         }
         if (username.value.match(/[^a-zA-Z0-9]/)) {
           alert("Username must be alphanumeric")
+          insult("The user entered an invalid username.")
           return false;
         }
         // Switch email and username NOW
@@ -140,18 +162,22 @@
         username.id="email";
         if (!password.value) {
           alert("Password cannot be empty")
+          insult("The user did not enter a password.")
           return false;
         }
         if (password.value == email.value) {
           alert("Your email cannot be your password")
+          insult("The user entered the same value for both their email and password.")
           return false;
         }
         if (password.value == username.value) {
-          alert("Your password cannot be your email")
+          alert("Your username cannot be your password")
+          insult("The user entered the same value for both their username and password.")
           return false;
         }
         if (email.value == username.value) {
           alert("Your username cannot be your email, how the hell did you trigger this check?")
+          insult("The user triggered an impossible fail condition.")
           return false;
         }
         password.value = "";
@@ -184,5 +210,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.20<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.21<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
