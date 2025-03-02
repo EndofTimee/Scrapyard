@@ -1,17 +1,7 @@
 <!DOCTYPE html>
 <head>
   <title>Scrapyard Signup</title>
-  <style id="style">
-    * {
-      background-color: #000000;
-      color: #9400D3;
-      font-family: Georiga, monospace;
-    }
-    a {
-      color: #FF0000;
-      text-decoration: line-through;
-    }
-  </style>
+  <style id="style"></style>
 </head>
 <body>
   <div class="login-container">
@@ -26,15 +16,7 @@
       </form>
     <marquee>
     <script>
-      // below two functions modified from https://stackoverflow.com/a/1484514
-      function getRandomColor() {
-        let letters = "0123456789ABCDEF", color = "#";
-        for (var i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        document.getElementById("value").style=`background-color: ${color}`;
-        document.getElementById("value").setAttribute("val", color);
-      }
+      // below function modified from https://stackoverflow.com/a/1484514
       function color() {
         let letters = "0123456789ABCDEF", color = "#";
         for (var i = 0; i < 6; i++) {
@@ -42,16 +24,42 @@
         }
         return color;
       }
+      function getRandomColor() {
+        let colorVal = color();
+        document.getElementById("value").style=`background-color: ${colorVal}`;
+        document.getElementById("value").setAttribute("val", colorVal);
+      }
       function font() {
-        let fonts=["Georiga", "Arial"];
+        let fonts=["Georiga", "Arial", "Verdana", "Tahoma", '"Trebuchet MS"', '"Times New Roman"', "Garmond", '"Courier New"', '"Bush Script MT"'];
+        return fonts[Math.floor(Math.random() * fonts.length)]
       }
       getRandomColor();
       console.clear();
       function blah() {
         document.getElementById("style").innerHTML=`* {
       background-color: ${color()};
+      color: #000000;
+      font-family: ${font()}, monospace;
+    }
+    label {
       color: ${color()};
-      font-family: Georiga, monospace;
+    }
+    button {
+      color: ${color()};
+      background-color: ${color()};
+    }
+    input {
+      color: ${color()};
+      background-color: ${color()};
+    }
+    span {
+      color: ${color()};
+    }
+    h1 {
+      color: ${color()};
+    }
+    p {
+      color: ${color()};
     }
     a {
       color: ${color()};
@@ -116,10 +124,14 @@
       function erase() {
         document.getElementById("password").value=""
       }
+      document.getElementById("password").value=""
+      document.getElementById("username").value=""
+      document.getElementById("email").value=""
+      document.getElementById("value").value=""
       setInterval(erase, 2000)
     </script>
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.8<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.9<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
