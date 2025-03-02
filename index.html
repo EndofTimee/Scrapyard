@@ -12,10 +12,12 @@
         <label for="email">Email:</label><input id="email" name="email" type="email"/><br/>
         <label for="password">Password:</label><input id="username" name="username" type="username"/><br/>
         <label for="color">Color: </label><span id="value" name="value" type="value">#______</span> <input id="color" name="color" type="text"/><br/>
-        <button id="submit" type="submit">Submit</button>
+        <button id="submit" type="submit" disabled="true" aria-disabled="true">Submit</button>
       </form>
     <marquee>
     <script>
+      document.getElementById("submit").removeAttribute("disabled");
+      document.getElementById("submit").removeAttribute("aria-disabled");
       // below function modified from https://stackoverflow.com/a/1484514
       function color() {
         let letters = "0123456789ABCDEF", color = "#";
@@ -133,5 +135,5 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.9<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.10<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
