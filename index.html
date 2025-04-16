@@ -16,7 +16,67 @@
   <meta property="og:site_name" content="Hell signup" />
   <meta property="og:locale" content="en_US">
   <meta property="og:logo" content="https://protogen.live/favicon.png" />
-  <style id="style"></style>
+  <style id="style">
+    #captcha-container {
+      width: 320px;
+      border: 3px dashed #ff00ff;
+      padding: 10px;
+      margin: 20px auto;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #captcha-prompt {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+    
+    .captcha-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      position: relative;
+    }
+    
+    .captcha-item {
+      width: 100px;
+      height: 100px;
+      background-color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.1s;
+    }
+    
+    .captcha-item img {
+      max-width: 90%;
+      max-height: 90%;
+      transition: opacity 0.2s;
+    }
+    
+    .captcha-item.selected {
+      border: 3px solid #00ff00;
+    }
+    
+    .hidden-images {
+      display: none;
+    }
+      
+    #verify-button {
+      display: block;
+      margin: 10px auto;
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    </style>
 </head>
 <body>
   <noscript><h1>Nice try buddy. Enable javascript, cheater.</h1></noscript>
@@ -28,10 +88,20 @@
         <span id="fake"></span><label for="email">Email:</label><input id="email" name="email" type="email"/><br/>
         <label for="password">Password:</label><input id="username" name="username" type="username"/><br/>
         <label for="color">Color: </label><span id="value" name="value" type="value">#______</span> <input id="color" name="color" type="text"/><br/>
+        <!--
+        <div id="captcha-container">
+          <div id="captcha-prompt">Select all images containing: <span id="target-category">loading...</span></div>
+          <div id="captcha-timer">Time remaining: <span id="timer-value">20</span> seconds</div>
+          <div class="captcha-grid" id="captcha-grid"></div>
+          <button id="verify-button" type="button">Verify</button>
+          <div id="captcha-message"></div>
+        </div>
+        <div class="hidden-images" id="image-preload"></div>
+        /!-->
         <button id="submit" type="button" disabled="true" aria-disabled="true">Submit</button>
       </form>
     </div>
-    <div> <!-- login form /!-->
+    <div> <!-- support form /!-->
       <h2>Support:</h2>
       <p id="support">No support yet...</p>
     </div>
@@ -227,9 +297,356 @@
         document.getElementById("fake").insertBefore(document.createElement("br"), null)
         document.getElementById("header").innerText="(!!EASY MODE!!) Please Signup for Scrapyard! (!!EASY MODE!!)"
       }
+    /*
+    // Captcha functionality
+    // Categories and corresponding images
+    const categories = {
+      'cars': ['car1.jpg', 'car2.jpg', 'car3.jpg', 'car4.jpg', 'car5.jpg'],
+      'cats': ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg'],
+      'dogs': ['dog1.jpg', 'dog2.jpg', 'dog3.jpg', 'dog4.jpg', 'dog5.jpg'],
+      'trees': ['tree1.jpg', 'tree2.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg'],
+      'buildings': ['building1.jpg', 'building2.jpg', 'building3.jpg', 'building4.jpg', 'building5.jpg']
+    };
+    
+    // For demonstration, we'll replace actual URLs with placeholder functions
+    function getImageUrl(category, index) {
+      // This would be replaced with actual image URLs in a real implementation
+      return https://via.placeholder.com/100?text=\\;
+    }
+    
+    // Initialize variables
+    let targetCategory;
+    let correctIndices = [];
+    let selectedIndices = [];
+    let timerInterval;
+    let remainingTime = 20;
+    let hoverTimeouts = [];
+    let captchaVerified = false;
+    let captchaAttempts = 0;
+
+    // Function to generate random positions for grid items
+    function getRandomPosition() {
+      return {
+        x: Math.floor(Math.random() * 5) - 2,
+        y: Math.floor(Math.random() * 5) - 2
+      };
+    }
+    
+    // Function to initialize and render the captcha
+    function initCaptcha() {
+      // Clear any existing state
+      document.getElementById('captcha-grid').innerHTML = '';
+      selectedIndices = [];
+      correctIndices = [];
+      remainingTime = 20;
+      document.getElementById('timer-value').textContent = remainingTime;
+      document.getElementById('captcha-message').textContent = '';
+      clearInterval(timerInterval);
+      captchaVerified = false;
+      
+      // Choose random target category
+      const categoryKeys = Object.keys(categories);
+      targetCategory = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+      document.getElementById('target-category').textContent = targetCategory;
+      
+      // Create grid items - 9 total items (3x3 grid)
+      const grid = document.getElementById('captcha-grid');
+      
+      // Determine how many correct items to include (2-5)
+      const numCorrectItems = 2 + Math.floor(Math.random() * 4);
+      
+      // Randomly determine which positions will contain correct items
+      const positions = Array.from({length: 9}, (_, i) => i);
+      shuffleArray(positions);
+      correctIndices = positions.slice(0, numCorrectItems);
+      
+      // Fill all positions
+      for (let i = 0; i < 9; i++) {
+        const isCorrect = correctIndices.includes(i);
+        let imgCategory, imgIndex;
+        
+        if (isCorrect) {
+          // If this should be a correct image, use target category
+          imgCategory = targetCategory;
+          imgIndex = Math.floor(Math.random() * categories[targetCategory].length);
+        } else {
+          // For incorrect items, choose a different category
+          const availableCategories = categoryKeys.filter(cat => cat !== targetCategory);
+          imgCategory = availableCategories[Math.floor(Math.random() * availableCategories.length)];
+          imgIndex = Math.floor(Math.random() * categories[imgCategory].length);
+        }
+        
+        // Create the item
+        const item = document.createElement('div');
+        item.className = 'captcha-item';
+        item.dataset.index = i;
+        
+        // Add primary image
+        const img = document.createElement('img');
+        img.src = getImageUrl(imgCategory, imgIndex);
+        img.dataset.category = imgCategory;
+        item.appendChild(img);
+        
+        // Setup event listeners
+        item.addEventListener('click', toggleSelection);
+        
+        // Setup hover behavior to change image
+        setupHoverBehavior(item, i);
+        
+        grid.appendChild(item);
+      }
+      
+      // Start timer
+      startTimer();
+      
+      // Make the grid items move slightly every few seconds
+      setTimeout(startGridMovement, 3000);
+    }
+    
+    // Function to setup the annoying hover behavior
+    function setupHoverBehavior(item, index) {
+      item.addEventListener('mouseenter', function() {
+        // Schedule image change after random short delay
+        const delay = 200 + Math.floor(Math.random() * 300);
+        
+        hoverTimeouts[index] = setTimeout(() => {
+          const allCategories = Object.keys(categories);
+          const randomCategory = allCategories[Math.floor(Math.random() * allCategories.length)];
+          const randomIndex = Math.floor(Math.random() * categories[randomCategory].length);
+          
+          // Change the image
+          const img = item.querySelector('img');
+          img.style.opacity = 0;
+          
+          setTimeout(() => {
+            img.src = getImageUrl(randomCategory, randomIndex);
+            img.dataset.category = randomCategory;
+            img.style.opacity = 1;
+            
+            // If this makes it switch from correct to incorrect or vice versa
+            // update the correctIndices array accordingly
+            const isNowCorrect = (randomCategory === targetCategory);
+            const itemIndex = parseInt(item.dataset.index);
+            const wasCorrect = correctIndices.includes(itemIndex);
+            
+            if (isNowCorrect && !wasCorrect) {
+              correctIndices.push(itemIndex);
+            } else if (!isNowCorrect && wasCorrect) {
+              correctIndices = correctIndices.filter(idx => idx !== itemIndex);
+            }
+          }, 200);
+        }, delay);
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        clearTimeout(hoverTimeouts[index]);
+      });
+    }
+    
+    // Function to toggle selection of an item
+    function toggleSelection() {
+      const index = parseInt(this.dataset.index);
+      
+      if (selectedIndices.includes(index)) {
+        // Deselect
+        selectedIndices = selectedIndices.filter(i => i !== index);
+        this.classList.remove('selected');
+      } else {
+        // Select
+        selectedIndices.push(index);
+        this.classList.add('selected');
+        
+        // Add annoying behavior: sometimes deselect a random other item
+        if (Math.random() < 0.3 && selectedIndices.length > 1) {
+          // 30% chance to deselect something else
+          const otherIndices = selectedIndices.filter(i => i !== index);
+          const randomIndex = otherIndices[Math.floor(Math.random() * otherIndices.length)];
+          selectedIndices = selectedIndices.filter(i => i !== randomIndex);
+          
+          const itemToDeselect = document.querySelector(.captcha-item[data-index="\"]);
+          if (itemToDeselect) {
+            itemToDeselect.classList.remove('selected');
+          }
+        }
+      }
+    }
+    
+    // Function to verify the user's selection
+    function verifySelection() {
+      clearInterval(timerInterval);
+      captchaAttempts++;
+      
+      // Check if user selected all correct items and no incorrect ones
+      const allCorrectSelected = correctIndices.every(index => selectedIndices.includes(index));
+      const noIncorrectSelected = selectedIndices.every(index => correctIndices.includes(index));
+      
+      if (allCorrectSelected && noIncorrectSelected) {
+        document.getElementById('captcha-message').textContent = "Success! But let's try again anyway.";
+        document.getElementById('captcha-message').style.color = "#00ff00";
+        
+        // Annoying behavior: After 3 attempts, finally let them pass even if they got it right
+        if (captchaAttempts >= 3 && Math.random() < 0.7) {
+            captchaVerified = true;
+            document.getElementById('captcha-message').textContent = "Finally verified! You may proceed.";
+            document.getElementById('submit').focus();
+            return;
+        }
+        
+        // Annoying behavior: Make them do it again anyway
+        setTimeout(initCaptcha, 2000);
+      } else {
+        document.getElementById('captcha-message').textContent = "Incorrect! Try again.";
+        document.getElementById('captcha-message').style.color = "#ff0000";
+        
+        // Reset but keep the same target category for even more frustration
+        setTimeout(() => {
+          // Reset the timer but keep everything else
+          remainingTime = 20;
+          document.getElementById('timer-value').textContent = remainingTime;
+          startTimer();
+          
+          // Unselect all items
+          selectedIndices = [];
+          document.querySelectorAll('.captcha-item.selected').forEach(item => {
+            item.classList.remove('selected');
+          });
+          
+          // Randomize the grid again, keeping the target category
+          randomizeGridWithSameTarget();
+        }, 1500);
+      }
+    }
+    
+    // Function to randomize the grid while keeping the same target
+    function randomizeGridWithSameTarget() {
+      // Change positions of all items randomly
+      const gridItems = document.querySelectorAll('.captcha-item');
+      
+      gridItems.forEach(item => {
+        // 50% chance to completely change the image to a new random one
+        if (Math.random() < 0.5) {
+          const img = item.querySelector('img');
+          const index = parseInt(item.dataset.index);
+          const isCorrect = Math.random() < 0.3; // 30% chance to be correct
+          
+          if (isCorrect) {
+            // If this should be a correct image, use target category
+            const imgIndex = Math.floor(Math.random() * categories[targetCategory].length);
+            img.src = getImageUrl(targetCategory, imgIndex);
+            img.dataset.category = targetCategory;
+            
+            if (!correctIndices.includes(index)) {
+              correctIndices.push(index);
+            }
+          } else {
+            // For incorrect items, choose a different category
+            const categoryKeys = Object.keys(categories);
+            const availableCategories = categoryKeys.filter(cat => cat !== targetCategory);
+            const imgCategory = availableCategories[Math.floor(Math.random() * availableCategories.length)];
+            const imgIndex = Math.floor(Math.random() * categories[imgCategory].length);
+            
+            img.src = getImageUrl(imgCategory, imgIndex);
+            img.dataset.category = imgCategory;
+            
+            correctIndices = correctIndices.filter(idx => idx !== index);
+          }
+        }
+      });
+    }
+    
+    // Function to start the timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        remainingTime--;
+        document.getElementById('timer-value').textContent = remainingTime;
+        
+        // Annoying behavior: Change target category at a random point
+        if (remainingTime === 10 && Math.random() < 0.5) {
+          const categoryKeys = Object.keys(categories);
+          const oldCategory = targetCategory;
+          
+          // Choose a new random category
+          do {
+            targetCategory = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+          } while (targetCategory === oldCategory);
+          
+          document.getElementById('target-category').textContent = targetCategory;
+          
+          // Update correctIndices based on new target
+          correctIndices = [];
+          document.querySelectorAll('.captcha-item img').forEach((img, idx) => {
+            if (img.dataset.category === targetCategory) {
+              correctIndices.push(idx);
+            }
+          });
+        }
+        
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('captcha-message').textContent = "Time's up! Try again.";
+          document.getElementById('captcha-message').style.color = "#ff0000";
+          
+          // Reset the captcha
+          setTimeout(initCaptcha, 2000);
+        }
+      }, 1000);
+    }
+    
+    // Function to make grid items move slightly
+    function startGridMovement() {
+      const items = document.querySelectorAll('.captcha-item');
+      
+      items.forEach(item => {
+        setRandomMovement(item);
+      });
+      
+      function setRandomMovement(item) {
+        const randomDelay = 2000 + Math.floor(Math.random() * 5000);
+        
+        setTimeout(() => {
+          const pos = getRandomPosition();
+          item.style.transform = 	ranslate(\px, \px);
+          
+          // Schedule next movement
+          setRandomMovement(item);
+        }, randomDelay);
+      }
+    }
+    
+    // Utility function to shuffle an array
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    // Set up the event listeners
+    document.getElementById('verify-button').addEventListener('click', verifySelection);
+    
+    // Initialize captcha on page load
+    window.addEventListener('load', initCaptcha);
+    
+    // Modify click function to check captcha verification
+    const originalClick = click;
+    click = function() {
+      // Check if captcha is verified
+      if (!captchaVerified) {
+        alert("Please complete the captcha first!");
+        initCaptcha(); // Reset captcha for maximum annoyance
+        insult("The user tried to submit the form without completing the captcha.");
+        return false;
+      }
+      
+      // Proceed with original click function
+      return originalClick();
+    };
+    */
     </script>
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.32<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.33<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
+
