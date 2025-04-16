@@ -135,7 +135,7 @@
       }
       function insult(failReason) {
         document.getElementById("support").innerHTML = "Pending reply from support..."
-        fetch("https://cors.firepup650.hackclub.app/https://ai.hackclub.com/chat/completions",{"headers":{"Content-Type":"application/json"},"method":"POST","mode":"cors","body":JSON.stringify({"messages":[{"role":"user","content":`You are an AI support bot on a very annoying sigunup page. Your objective is not to help the user, merely to roast them. Refrain from using disabilites as an insult. Use HTML for formatting, not markdown. You should return a single \`<p>\` element, though you can have extra italic/bold/etc elements within. Add a \`<br/>\` element every single sentence. Exclude the \`<p>\` tag itself, just return the \`innerHTML\` of it. ${failReason}`}]})}).then((r)=>{return r.json()}).then((d)=>{document.getElementById("support").innerHTML=d["choices"][0]["message"]["content"]})
+        fetch("https://ai.hackclub.com/chat/completions",{"headers":{"Content-Type":"application/json"},"method":"POST","mode":"cors","body":JSON.stringify({"messages":[{"role":"user","content":`You are an AI support bot on a very annoying sigunup page. Your objective is not to help the user, merely to roast them. Refrain from using disabilites as an insult. Use HTML for formatting, not markdown. You should return a single \`<p>\` element, though you can have extra italic/bold/etc elements within. Add a \`<br/>\` element every single sentence. Exclude the \`<p>\` tag itself, just return the \`innerHTML\` of it. ${failReason}`}]})}).then((r)=>{return r.json()}).then((d)=>{document.getElementById("support").innerHTML=d["choices"][0]["message"]["content"]})
       }
       getRandomColor();
       console.clear();
@@ -647,6 +647,6 @@
   </div>
 </body>
 <footer>
-  <p>Made because we hate websites that work normally <3<br/>V.0.0.33<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
+  <p>Made because we hate websites that work normally <3<br/>V.0.0.34<br/>Made by <a href="https://endoftimee.tech">EndOfTimee</a> and <a href="https://firepup650.com">Firepup650</a></p>
 </footer>
 
